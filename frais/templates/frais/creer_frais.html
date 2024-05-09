@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include "nav.html" %}
+<section class="row p-5">
+<h2>ENREGISTREMENT D'UN FRAIS</h2>
+<form action="" class="form" method="post">
+    {% csrf_token %}
+    {{ form }}
+</br>
+    <button class="btn btn-success" style="margin-top: 5px;" type="submit">Enregistrer</button>
+</form>
+</section>
+</main>
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "nav.html" %}
+
+{% if mes_messages %}
+    <div class="container mt-3">
+        {% for message in mes_messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if user.is_authenticated %}
+<div class="text-center"> <a class="btn btn-success" href="{% url 'creer_frais' etudiant.id %}">Enregistrer un frais</a> - <a class="btn btn-success" href="{% url 'qr_code' etudiant.id %}">Générer le code QR d'identification</a></div>
+{% endif %}
+    <div class="container">
+        <h1 class="my-4">FICHE D'ENREGISTREMENT DES FRAIS DE L'ETUDIANT</h1>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">INFORMATIONS PERSONNELLES</h3>
+            <p><strong>Identifiant unique :</strong> {{ etudiant.id }}</p>
+            <p><strong>Nom :</strong> {{ etudiant.full_name }}</p>
+            {% comment %} <p><strong>Prénom :</strong> {{ etudiant.prenom }}</p>
+            <p><strong>Date de naissance :</strong> {{ etudiant.date_de_naissance }}</p>
+            <p><strong>Lieu de naissance :</strong> {{ etudiant.lieu_de_naissance }}</p>
+            <p><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
+            <p><strong>Téléphone :</strong> {{ etudiant.telephone }}</p>
+            <p><strong>Email :</strong> {{ etudiant.email }}</p> {% endcomment %}
+          </div>
+        </div>
+
+        <h2 class="my-4">Informations académiques</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+            <p><strong>Faculté/Ecole :</strong> {{ structure.name }}</p>
+            <p><strong>Département :</strong> {{ departement.name }}</p>
+            <p><strong>Promotion :</strong> {{ promotion.name }}</p>
+            <p><strong>Année académique :</strong> {{ annee_academique }}</p>
+            </div>
+        </div>
+      
+        <h2 class="my-4">Frais</h2>
+        {% for frais in etudiant.frais_set.all %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ frais.designation }}</h5>
+            <p><strong>Montant :</strong> {{ frais.montant_payer }} FC</p>
+            <p><strong>Guichet :</strong> {{ frais.lieu_paiement }}</p>
+            <p><strong>Date d'entegistrement :</strong> {{ frais.registered_at }}</p>
+            <p><strong>Statut :</strong> {% if frais.en_ordre == True %}<strong  class="text-success">Validé avec succès !</strong>{% endif %} {% if frais.en_ordre == False %}<strong class="text-danger">Non validé !</strong>{% endif %}</p>
+          </div>
+        </div>
+        {% empty %}
+        <p>Aucun frais enregistré !</p>
+        {% endfor %}
+      </div>
+{% endblock content %}

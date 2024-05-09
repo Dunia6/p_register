@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Établissement - Accueil{% endblock %}
+
+{% block content %}
+{% include "nav.html" %}
+<div class="container">
+{% for annee_academique in annee_academiques %}
+    <h1 class="my-4 text-center">LISTING DES ETUDIANTS ({{ annee_academique.name }})</h1>
+    <table class="table table-bordered">
+    {% for structure in annee_academique.structure_set.all %}
+      <thead>
+        <tr>
+            <th colspan="2"><h3>{{ structure.name }}</h3></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for departement in structure.departement_set.all %}
+          <tr>
+            <td><strong>{{ departement.name }}</strong></td>
+            <td>
+              <table class="table table-bordered">
+                {% for promotion in departement.promotion_set.all %}
+                  <thead>
+                    <tr>
+                      <th colspan="2">{{ promotion.name }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for etudiant in promotion.etudiant_set.all %}
+                      <tr>
+                        <td>{{ forloop.counter }}.</td>
+                        <td><a href="{% url "detail_etudiant" etudiant.id %}">{{ etudiant.full_name }}</a></td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="2">Aucun étudiant dans cette promotion.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                {% empty %}
+                  <tbody>
+                    <tr>
+                      <td colspan="2">Aucune promotion dans ce département.</td>
+                    </tr>
+                  </tbody>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="2">Aucun département dans cette structure.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    {% empty %}
+      <tbody>
+        <tr>
+          <td colspan="2">Aucune structure disponible.</td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
+{% empty %}
+<h1 class="my-4 text-center">Aucune information disponible pour cette année academique</h1>
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% comment %} <script>
+$(document).ready(function() {
+  // Masquer tous les tableaux de promotion et d'étudiant au chargement de la page
+  $('table table').hide();
+
+  // Ajouter les événements de clic pour afficher/masquer les tableaux de promotion et d'étudiant
+  $('table thead tr').click(function() {
+    $(this).next('tbody').find('table').slideToggle();
+  });
+});
+</script> {% endcomment %}
+{% endblock %}

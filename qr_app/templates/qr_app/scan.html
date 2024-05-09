@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Scanner un code QR</h1>
+<form id="qr-code-form" class="justify-content-center" method="post">
+  {% csrf_token %}
+  <video id="video" width="500" height="500"></video>
+  <canvas id="canvas" style="display: none;" width="300" height="300"></canvas>
+  <button type="submit" id="scan-button" disabled>Scanner le code QR</button>
+  <div id="error-message" style="display: none;"></div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
+const scanButton = document.getElementById('scan-button');
+const errorMessage = document.getElementById('error-message');
+
+navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+  .then(stream => {
+    video.srcObject = stream;
+    video.play();
+    scanButton.disabled = false;
+
+    video.addEventListener('canplay', () => {
+      setInterval(() => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code) {
+          scanButton.disabled = true;
+          errorMessage.style.display = 'none';
+          document.getElementById('qr-code-form').submit();
+        }
+      }, 500);
+    });
+  })
+  .catch(error => {
+    console.error(error);
+    errorMessage.textContent = 'Impossible d\'accéder à la caméra.';
+    errorMessage.style.display = 'block';
+  });
+</script>
+{% endblock %}
