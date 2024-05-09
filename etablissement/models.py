@@ -72,6 +72,10 @@ class Etudiant(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     full_name = models.CharField(max_length=50)
+    prenom = models.CharField(max_length=50, null=True, blank=True)
+    adresse = models.CharField(max_length=50, null=True, blank=True)
+    telephone = models.CharField(max_length=50, null=True, blank=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
     sexe = models.CharField(max_length=1, choices=SEXE)
     promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
