@@ -23,8 +23,8 @@
             <p><strong>Identifiant unique :</strong> {{ etudiant.id }}</p>
             <p><strong>Nom :</strong> {{ etudiant.full_name }}</p>
             <p><strong>Prénom :</strong> {{ etudiant.prenom }}</p>
-            {% comment %} <p><strong>Date de naissance :</strong> {{ etudiant.date_de_naissance }}</p>
-            <p><strong>Lieu de naissance :</strong> {{ etudiant.lieu_de_naissance }}</p> {% endcomment %}
+            <p><strong>Date de naissance :</strong> {{ etudiant.birthdate }}</p>
+            <p><strong>Lieu de naissance :</strong> {{ etudiant.lieu_de_naissance }}</p>
             <p><strong>Adresse :</strong> {{ etudiant.adresse }}</p>
             <p><strong>Téléphone :</strong> {{ etudiant.telephone }}</p>
             <p><strong>Email :</strong> {{ etudiant.email }}</p>
@@ -48,7 +48,8 @@
             <h5 class="card-title">{{ frais.designation }}</h5>
             <p><strong>Montant :</strong> {{ frais.montant_payer }} FC</p>
             <p><strong>Guichet :</strong> {{ frais.lieu_paiement }}</p>
-            <p><strong>Date d'entegistrement :</strong> {{ frais.registered_at }}</p>
+            <p><strong>Date d'enregistrement :</strong> {{ frais.registered_at }}</p>
+            <p><strong>Agent d'enregistrement :</strong> {{ frais.agent }}</p>
             <p><strong>Statut :</strong> {% if frais.en_ordre == True %}<strong  class="text-success">Validé avec succès !</strong>{% endif %} {% if frais.en_ordre == False %}<strong class="text-danger">Non validé !</strong>{% endif %}</p>
           </div>
         </div>

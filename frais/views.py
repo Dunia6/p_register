@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='login')
 def Creer_frais(request, id):
     """ Vue créer frais """
+    user = request.user
     etudiant = get_object_or_404(Etudiant, pk=id)
     decisiom = ""
     message = ""
@@ -23,6 +24,7 @@ def Creer_frais(request, id):
         if form.is_valid():
             frais = form.save(commit=False)
             frais.etudiant = etudiant
+            frais.agent = user
             
             for etudiant in etudiant.frais_set.all():
                 if frais.designation == etudiant.designation:
@@ -35,7 +37,7 @@ def Creer_frais(request, id):
             if double_frais != 1:
                 frais.save()
                 decisiom = 0
-                message = "Frais enregistré avec succes !"
+                messages.success(request, "Frais enregistré avec succes !")
             return redirect('detail_etudiant', id=id)
         context = {'form': form, 'decision': decisiom, 'message': message, 'etudiant': etudiant}
         return render(request, 'frais/creer_frais.html', context)

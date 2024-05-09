@@ -24,6 +24,7 @@ def home(request):
     }
     return render(request, 'etablissement/home.html', context)
 
+
 @login_required(login_url="login")
 def etudiant_detail(request, id):
     """ Vue de la page detail étudiant """
