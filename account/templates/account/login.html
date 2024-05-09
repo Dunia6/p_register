@@ -5,7 +5,7 @@
 <figure class="text-center">
     <img class="img-fluid rounded m-3 text-center" style="width: 200px; height: 200px" src="{% static 'logo.png' %}" alt="logo">
 </figure>
-<h2 class="text-center">Connexion</h2>
+<h2 class="text-center">Connexion - <a href="{% url 'admin:login' %}">Admin</a></h2>
 {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-danger text-center">{{ message }}</div>
